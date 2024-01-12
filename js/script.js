@@ -52,3 +52,18 @@ function resetGrid() {
     // Resetto il contatore delle celle
     cellCount = 1; 
 }
+
+
+// Event listener per il clic sul pulsante "Play"
+playButton.addEventListener('click', function () {
+    if (!createGrid) {
+        createGridFunction();
+
+        // Imposto il flag per indicare che la griglia è stata creata
+        createGrid = true; 
+    } else {
+        // Se la griglia è già stata creata, chiamo la funzione per resettarla
+        resetGrid();
+        createGrid = false;
+    }
+});
