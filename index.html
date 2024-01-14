@@ -26,13 +26,20 @@
                     <option value="3">hard</option>
                 </select>
             </div>
+            <div id="score-display" class="navbar-text">Punteggio: 0</div>
             <button id="play-button" class="btn btn-outline-success" type="button">Play</button>
         </nav>
     </header>
     <main>
         <div class="d-flex">
-            <div id="grid">
-
+            <div id="grid"></div>
+    
+            <div id="game-over-container" style="display: none;">
+                <div id="game-over-message">
+                    <h2>Gioco Terminato</h2>
+                    <p id="result-message"></p>
+                    <p id="final-score"></p>
+                </div>
             </div>
         </div>
     </main>
