@@ -5,8 +5,7 @@ const grid = document.getElementById('grid');
 const button = document.getElementById('play-button');
 const levelSelect = document.getElementById('select-level');
 const select = document.querySelector('select');
-
-
+const scoreDisplay = document.getElementById('score-display');
 
 
 //funzioni
@@ -54,7 +53,9 @@ const startGame = event => {
     const totalCells = rows * cols;
 
 
-
+    //preparo una variabile per contare i punti 
+    let score = 0;
+    scoreDisplay.innerText = score;
     //Generiamo celle
     for (let i = 1; i <= totalCells; i++){
         //creo cella
@@ -63,8 +64,12 @@ const startGame = event => {
         //cella cliccabile
         cell.addEventListener('click', () => {
             if (cell.classList.contains('clicked')) return;
+            //add clicked
             cell.classList.add('clicked');
             console.log(i);
+            //incremento punteggio ed insersco
+            scoreDisplay.innerText = ++score;
+            console.log(score);
         });
 
         //inserisco nella griglia
