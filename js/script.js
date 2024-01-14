@@ -3,14 +3,20 @@ console.log('JS OK');
 // Recupero elementi
 const grid = document.getElementById('grid');
 const button = document.getElementById('play-button');
+const level = document.getElementById('select-level');
+const select = document.querySelector('select');
 
 
 
 
 //funzioni
 
-const startGame = () => {
+const startGame = event => {
 
+    //blocco ricarica pagina
+    event.preventDefault();
+
+    //Funzione creare celle
     const createCell = cellNumber => {
         const cell = document.createElement('div');
         cell.classList.add('cell');
@@ -31,9 +37,9 @@ const startGame = () => {
 
         //cella cliccabile
         cell.addEventListener('click', () => {
-            console.log(i);
-
+            if (cell.classList.contains('clicked')) return;
             cell.classList.add('clicked');
+            console.log(i);
         });
 
         //inserisco nella griglia
@@ -44,4 +50,4 @@ const startGame = () => {
 
 // listener button
 
-button.addEventListener('click', startGame());
+button.addEventListener('click', startGame);
