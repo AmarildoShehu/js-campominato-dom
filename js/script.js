@@ -23,6 +23,16 @@ const startGame = event => {
         return cell;
     }
 
+    //Funzione creare bombe random nella grid
+    const generateBombs = (maxBombNumber , totalbombs) =>{
+        const bombs = [];
+        while(bombs.lenght < totalbombs){
+            const randomNumber = Math.floor(Math.random()* maxBombNumber) + 1;
+            if(!bombs.includes(randomNumber))bombs.push(randomNumber);
+        }
+        return bombs;
+    }
+
     //testo Button modificato
     button.innerText = 'Restart';
     
@@ -56,6 +66,15 @@ const startGame = event => {
     //preparo una variabile per contare i punti 
     let score = 0;
     scoreDisplay.innerText = score;
+
+    //##Sezione Bombe ## //
+    const totalbombs = 16;
+    // MAX punteggio
+    const maxPoint = totalCells - totalbombs;
+    //generiamo bombe
+    const bombs = generateBombs(totalCells , totalbombs)
+
+
     //Generiamo celle
     for (let i = 1; i <= totalCells; i++){
         //creo cella
