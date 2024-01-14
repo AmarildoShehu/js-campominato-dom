@@ -1,69 +1,125 @@
 console.log('JS OK');
 
-// 1. Creare con js una griglia 10x10
-// 2. Ogni cella deve avere un numero progressivo da 1 a 100
-// 3. Quando il cliente clicca il pulsante plauìy appare la griglia
-
-// prendo gli elementi
 const grid = document.getElementById('grid');
 const playButton = document.getElementById('play-button');
+const scoreDisplay = document.getElementById('score-display');
 
-// 1.creo costanti row e cols
-const row = 10;
-const cols= 10;
-const totCells= row * cols;
 
-// Flag per controllare se la griglia è già stata creata
+
+const rows = 10;
+const cols = 10;
+const totalCells = rows * cols;
+const bombCount = 16;
 let createGrid = false;
-
-//contatore numeri delle celle
 let cellCount = 1;
+let score = 0;
+let clickedCells = [];
+let bombPositions = [];
+const maxScore = totalCells - bombCount;
+let gameOver = false;
 
-//funzione al creazione griglia
-function createGridFunction(){
-//ciclo per creare le cell numerate
-        for (let i = 0; i < totCells; i++) {
+function generateRandomNumbers(quantity, max) {
+    const numbers = [];
+    while (numbers.length < quantity) {
+        const randomNumber = Math.floor(Math.random() * max);
+        if (!numbers.includes(randomNumber)) {
+            numbers.push(randomNumber);
+        }
+    }
+    return numbers;
+}
+
+function createGridFunction() {
+    for (let i = 0; i < rows; i++) {
+        for (let j = 0; j < cols; j++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
 
-            cell.textContent = cellCount;
-            cellCount++;     
+            const index = i * cols + j + 1;  // Aggiungi 1 per iniziare da 1 invece di 0
 
+            cell.textContent = index;  // Utilizza l'indice della cella nella griglia
             grid.appendChild(cell);
 
-            //Evenet listner click sulle celle
-            cell.addEventListener('click', function(event) {
-                const clickedCell = event.target;
-                const cellNumber = clickedCell.textContent;
-                console.log("Hai cliccato sulla cella: " + cellNumber);
-                
-                //aggiungo la classe clicked
-                clickedCell.classList.add('clicked')
-            });
+            cell.addEventListener('click', cellClickHandler);
+            cell.setAttribute('data-index', index);
         }
+    }
 }
 
-// Funzione per reset griglia
-function resetGrid() {
-    // Rimuovo tutti gli elementi figli della griglia
+function resetGame() {
     while (grid.firstChild) {
         grid.removeChild(grid.firstChild);
     }
-    // Resetto il contatore delle celle
-    cellCount = 1; 
+    cellCount = 1;
+    score = 0;
+    clickedCells = [];
+    bombPositions = [];
+    gameOver = false;
 }
 
+function updateScore() {
+    scoreDisplay.textContent = "Punteggio: " + score;
+}
 
-// Event listener per il clic sul pulsante "Play"
-playButton.addEventListener('click', function () {
-    if (!createGrid) {
-        createGridFunction();
+function endGame(isVictory) {
+    // Nascondi la griglia e mostra il messaggio di gioco terminato
+    grid.style.display = 'none';
+    const gameOverMessage = document.getElementById('game-over-message');
+    gameOverMessage.style.display = 'block';
 
-        // Imposto il flag per indicare che la griglia è stata creata
-        createGrid = true; 
+    const resultMessage = document.getElementById('result-message');
+    const finalScore = document.getElementById('final-score');
+
+    if (isVictory) {
+        resultMessage.textContent = "Congratulazioni! Hai vinto!";
     } else {
-        // Se la griglia è già stata creata, chiamo la funzione per resettarla
-        resetGrid();
-        createGrid = false;
+        resultMessage.textContent = "Mi dispiace, hai perso.";
     }
+
+    finalScore.textContent = "Il tuo punteggio finale è: " + score;
+}
+
+function cellClickHandler(event) {
+    if (gameOver) {
+        console.log("Il gioco è già terminato.");
+        return;
+    }
+
+    const clickedCell = event.target;
+
+    if (!clickedCells.includes(clickedCell)) {
+        const cellNumber = clickedCell.textContent;
+        console.log("Hai cliccato sulla cella: " + cellNumber);
+
+        const index = parseInt(clickedCell.getAttribute('data-index'));
+        if (bombPositions.includes(index)) {
+            console.log("Boom! Hai colpito una bomba. Partita terminata!");
+            endGame(false);
+            gameOver = true; // Imposta il gioco come terminato
+        } else {
+            clickedCell.classList.add('clicked');
+            score++;
+            console.log("Il tuo punteggio attuale è: " + score);
+            updateScore();
+            clickedCells.push(clickedCell);
+
+            if (score === maxScore) {
+                console.log("Congratulazioni! Hai raggiunto il punteggio massimo. Partita vinta!");
+                endGame(true);
+                gameOver = true; // Imposta il gioco come terminato
+            }
+        }
+    } else {
+        console.log("Hai già cliccato su questa cella. Scegline un'altra.");
+    }
+}
+
+playButton.addEventListener('click', function () {
+    resetGame();
+    createGrid = true;
+    bombPositions = generateRandomNumbers(bombCount, totalCells);
+
+    updateScore();
+    createGridFunction();
 });
+console.log(document.getElementById('game-over-message'));
