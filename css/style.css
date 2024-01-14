@@ -12,8 +12,6 @@
 /* cell style */
 .cell{
     cursor: pointer;
-    width: calc(100% / 10); 
-    height: calc(100% / 10);
     border: 1px solid black;
     display: flex;
     justify-content: center;
@@ -26,13 +24,25 @@
     font-weight: bold;  /* Aggiungi il grassetto per una maggiore visibilità */
 }
 
-
-
 .bomb-cell {
     background-color: red;
     color: white;
 }
 
+#grid.easy .cell {
+    width: 10%;
+    height: 10%;
+}
+
+#grid.normal .cell {
+    width: calc(100% / 9);
+    height: calc(100% / 9);
+}
+
+#grid.hard .cell {
+    width: calc(100% / 7);
+    height: calc(100% / 7);
+}
 
 #game-over-container {
     display: flex;

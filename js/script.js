@@ -3,7 +3,7 @@ console.log('JS OK');
 // Recupero elementi
 const grid = document.getElementById('grid');
 const button = document.getElementById('play-button');
-const level = document.getElementById('select-level');
+const levelSelect = document.getElementById('select-level');
 const select = document.querySelector('select');
 
 
@@ -30,8 +30,33 @@ const startGame = event => {
     // svuoto griglia
     grid.innerText = '';
     
+    //recupero valore select
+    const level = levelSelect.value;
+    //assegno la classe alla griglia
+    grid.classList.add(level);
+    console.log(grid.classList);
+
+    //crazione di colls e row
+    let rows = 10;
+    let cols = 10;
+
+    switch (level) {
+        case 'normal':
+            rows = 9;
+            cols = 9;
+            break;
+        case 'hard':
+            rows = 7;
+            cols = 7;
+            break;
+    }
+
+    const totalCells = rows * cols;
+
+
+
     //Generiamo celle
-    for (let i = 1; i <= 100; i++){
+    for (let i = 1; i <= totalCells; i++){
         //creo cella
         const cell = createCell(i);
 
