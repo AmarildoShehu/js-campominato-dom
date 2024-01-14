@@ -11,15 +11,32 @@ const button = document.getElementById('play-button');
 
 const startGame = () => {
 
-    button.innerText = 'Restart';
-    //Svuota griglia
-    grid.innerText = '';
-
-    //Grid
-    for (let i = 1; i <= 100; i++){
+    const createCell = cellNumber => {
         const cell = document.createElement('div');
         cell.classList.add('cell');
-        cell.append(i);
+        cell.append(cellNumber);
+        return cell;
+    }
+
+    //testo Button modificato
+    button.innerText = 'Restart';
+    
+    // svuoto griglia
+    grid.innerText = '';
+    
+    //Generiamo celle
+    for (let i = 1; i <= 100; i++){
+        //creo cella
+        const cell = createCell(i);
+
+        //cella cliccabile
+        cell.addEventListener('click', () => {
+            console.log(i);
+
+            cell.classList.add('clicked');
+        });
+
+        //inserisco nella griglia
         grid.appendChild(cell);
     }
 };
